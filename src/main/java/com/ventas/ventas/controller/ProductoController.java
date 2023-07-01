@@ -7,10 +7,12 @@ import com.ventas.ventas.service.ProductoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +24,11 @@ public class ProductoController {
 
     String fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
-    @Autowired
     ProductoService productoService;
+
+    public ProductoController(ProductoService productoService){
+        this.productoService = productoService;
+    }
 
     @GetMapping("/lista")
     public ResponseEntity<List<Producto>> list(){
@@ -47,15 +52,20 @@ public class ProductoController {
         return new ResponseEntity(producto, HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+
+    @PostMapping(value = "/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestBody ProductoDto productoDto){
+        if(productoDto.getProveedor() == null || productoDto.getProveedor().getIdProveedor() == 0)
+            return new ResponseEntity(new Mensaje("El producto no esta asociado a un proveedor"), HttpStatus.BAD_REQUEST);
         if(StringUtils.isBlank(productoDto.getNombre()))
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
         if(productoDto.getPrecio()==null || productoDto.getPrecio()<0 )
             return new ResponseEntity(new Mensaje("el precio debe ser mayor que 0"), HttpStatus.BAD_REQUEST);
         if(productoService.existsByNombre(productoDto.getNombre()))
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
-        Producto producto = new Producto(productoDto.getCantidad(),productoDto.getEan(), fecha,24,productoDto.getNombre(), productoDto.getPrecio());
+        Producto producto = new Producto(productoDto.getId(), productoDto.getEan(),productoDto.getCantidad(),productoDto.getNombre(), fecha,productoDto.getPrecio(),productoDto.getProveedor(), productoDto.getDetalleVentas());
         productoService.save(producto);
         return new ResponseEntity(new Mensaje("producto creado"), HttpStatus.OK);
     }
@@ -72,10 +82,13 @@ public class ProductoController {
             return new ResponseEntity(new Mensaje("el precio debe ser mayor que 0"), HttpStatus.BAD_REQUEST);
 
         Producto producto = productoService.getOne(id).get();
-        producto.setNombre(productoDto.getNombre());
-        producto.setPrecio(productoDto.getPrecio());
+        producto.setEan(productoDto.getEan());
         producto.setCantidad(productoDto.getCantidad());
-        producto.setIdproveedor(productoDto.getIdproveedor());
+        producto.setNombre(productoDto.getNombre());
+        producto.setFecha(fecha);
+        producto.setPrecio(productoDto.getPrecio());
+        producto.setProveedor(productoDto.getProveedor());
+        producto.setDetalleVentas(productoDto.getDetalleVentas());
         productoService.save(producto);
         return new ResponseEntity(new Mensaje("producto actualizado"), HttpStatus.OK);
     }

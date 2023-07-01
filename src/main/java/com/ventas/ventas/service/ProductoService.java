@@ -13,8 +13,12 @@ import java.util.Optional;
 @Transactional
 public class ProductoService {
 
-    @Autowired
+
     ProductoRepository productoRepository;
+
+    public ProductoService (ProductoRepository productoRepository){
+       this.productoRepository = productoRepository;
+    }
 
     public List<Producto> list(){
         return productoRepository.findAll();

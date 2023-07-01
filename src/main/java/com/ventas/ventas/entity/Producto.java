@@ -1,25 +1,27 @@
 package com.ventas.ventas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name="producto")
-public class Producto implements Serializable {
+public class Producto implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="idproducto")
     private int id;
     @Column(name="ean")
     private String ean;
-    @Column(name="idproveedor")
-    private int idproveedor;
     @Column(name="cantidad")
     private int cantidad;
     @Column(name="descripcion_producto")
@@ -29,71 +31,23 @@ public class Producto implements Serializable {
     @Column(name="valor_venta")
     private float precio;
 
-    public Producto() {
-    }
+   // @JsonManagedReference
+    //@ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne()
+    @JoinColumn(name = "idproveedor")
+    private Proveedor proveedor;
+    @OneToMany(mappedBy = "producto", cascade={CascadeType.ALL})
+    private List<DetalleVenta> detalleVentas;
 
-    public Producto(int cantidad, String ean, String fecha, int idproveedor,@NotBlank String nombre, @NotBlank float precio) {
-        this.cantidad = cantidad;
-        this.ean = ean;
-        this.fecha = fecha;
-        this.idproveedor = idproveedor;
-        this.nombre = nombre;
-        this.precio = precio;
-    }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Producto(int id, String ean, int cantidad, String nombre, String fecha, float precio, Proveedor proveedor, List<DetalleVenta> detalleVentas) {
         this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
-    }
-
-    public String getEan() {
-        return ean;
-    }
-
-    public void setEan(String ean) {
         this.ean = ean;
-    }
-
-    public int getIdproveedor() {
-        return idproveedor;
-    }
-
-    public void setIdproveedor(int idproveedor) {
-        this.idproveedor = idproveedor;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
+        this.nombre = nombre;
         this.fecha = fecha;
+        this.precio = precio;
+        this.proveedor = proveedor;
+        this.detalleVentas = detalleVentas;
     }
 }
