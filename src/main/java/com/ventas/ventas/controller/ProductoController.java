@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/producto")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin("*")
 public class ProductoController {
 
     String fecha = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
@@ -61,7 +61,7 @@ public class ProductoController {
             return new ResponseEntity(new Mensaje("El producto no esta asociado a un proveedor"), HttpStatus.BAD_REQUEST);
         if(StringUtils.isBlank(productoDto.getNombre()))
             return new ResponseEntity(new Mensaje("el nombre es obligatorio"), HttpStatus.BAD_REQUEST);
-        if(productoDto.getPrecio()==null || productoDto.getPrecio()<0 )
+        if(productoDto.getPrecio()==null || productoDto.getPrecio()<=0 )
             return new ResponseEntity(new Mensaje("el precio debe ser mayor que 0"), HttpStatus.BAD_REQUEST);
         if(productoService.existsByNombre(productoDto.getNombre()))
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);

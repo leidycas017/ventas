@@ -1,0 +1,16 @@
+
+spring:
+  datasource:
+    username: root
+    password: bixawa52
+    url: jdbc:mysql://springboot-angular-ea.c2bm13p5wius.us-east-2.rds.amazonaws.com:3306/eadb
+    #driver-class-name: com.mysql.jdbc.Driver
+
+    driver-class-name=: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+server:
+  address: 0.0.0.0
