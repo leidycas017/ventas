@@ -1,16 +1,20 @@
 
-spring:
-  datasource:
-    username: ${db_username}
-    password: ${db_password}
-    url: ${db_url}
-    #driver-class-name: com.mysql.jdbc.Driver
+#spring:
+ # datasource:
+  #  username: ${db_username}
+   # password: ${db_password}
+    #url: ${db_url}
+    ###driver-class-name: com.mysql.jdbc.Driver
 
-    driver-class-name=: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+    #driver-class-name=: com.mysql.cj.jdbc.Driver
+  #jpa:
+   # hibernate:
+    #  ddl-auto: update
+    #show-sql: true
 
-server:
-  address: 0.0.0.0
+#server:
+ # address: 0.0.0.0
+
+#jwt:
+ # secret: secret
+ # expiration: 20000
