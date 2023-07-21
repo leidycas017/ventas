@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -59,8 +59,14 @@ public class AuthController {
                 new UsuarioRol(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
         Set<Rol> roles = new HashSet<>();
+        if(rolService.obtenerTodos().isEmpty()){
+            Rol rolAdmin = new Rol(RolNombre.ROLE_ADMIN);
+            Rol rolUser = new Rol(RolNombre.ROLE_USER);
+            rolService.save(rolAdmin);
+            rolService.save(rolUser);
+        }
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USER).get());
-        if(nuevoUsuario.getRoles().contains("admin"))
+        if(nuevoUsuario.getEmail().contains("admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
         usuario.setRoles(roles);
         usuarioService.save(usuario);
