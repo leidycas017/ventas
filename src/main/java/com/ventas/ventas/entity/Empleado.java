@@ -1,5 +1,6 @@
 package com.ventas.ventas.entity;
 
+import com.ventas.ventas.security.entity.Usuario;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -28,7 +29,7 @@ public class Empleado extends Persona implements Serializable{
     @Column(name = "correo")
     private String correo;
 
-    @OneToOne(mappedBy="empleado")
-    @PrimaryKeyJoinColumn
+    @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
     private Usuario usuario;
 }

@@ -1,6 +1,6 @@
 package com.ventas.ventas.security.service;
 
-import com.ventas.ventas.security.entity.UsuarioRol;
+import com.ventas.ventas.security.entity.Usuario;
 import com.ventas.ventas.security.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Optional<UsuarioRol> getByNombreUsuario(String nombreUsuario){
+    public Optional<Usuario> getByNombreUsuario(String nombreUsuario){
         return usuarioRepository.findByNombreUsuario(nombreUsuario);
     }
 
@@ -27,7 +27,7 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
-    public void save(UsuarioRol usuario){
+    public void save(Usuario usuario){
         usuarioRepository.save(usuario);
     }
 }

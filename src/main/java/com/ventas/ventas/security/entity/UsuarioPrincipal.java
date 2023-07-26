@@ -23,7 +23,7 @@ public class UsuarioPrincipal implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UsuarioPrincipal build(UsuarioRol usuario){
+    public static UsuarioPrincipal build(Usuario usuario){
         List<GrantedAuthority> authorities =
                 usuario.getRoles().stream().map(rol -> new SimpleGrantedAuthority(rol
                         .getRolNombre().name())).collect(Collectors.toList());

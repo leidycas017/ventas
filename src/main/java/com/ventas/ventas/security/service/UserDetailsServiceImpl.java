@@ -1,7 +1,7 @@
 package com.ventas.ventas.security.service;
 
 import com.ventas.ventas.security.entity.UsuarioPrincipal;
-import com.ventas.ventas.security.entity.UsuarioRol;
+import com.ventas.ventas.security.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
-        UsuarioRol usuario = usuarioService.getByNombreUsuario(nombreUsuario).get();
+        Usuario usuario = usuarioService.getByNombreUsuario(nombreUsuario).get();
         return UsuarioPrincipal.build(usuario);
     }
 }

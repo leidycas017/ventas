@@ -9,7 +9,7 @@ import com.ventas.ventas.dto.Mensaje;
 import com.ventas.ventas.security.dto.JwtDto;
 import com.ventas.ventas.security.dto.LoginUsuarioDto;
 import com.ventas.ventas.security.entity.Rol;
-import com.ventas.ventas.security.entity.UsuarioRol;
+import com.ventas.ventas.security.entity.Usuario;
 import com.ventas.ventas.security.enums.RolNombre;
 import com.ventas.ventas.security.jwt.JwtProvider;
 import com.ventas.ventas.security.service.RolService;
@@ -55,8 +55,8 @@ public class AuthController {
             return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         if(usuarioService.existsByEmail(nuevoUsuario.getEmail()))
             return new ResponseEntity(new Mensaje("ese email ya existe"), HttpStatus.BAD_REQUEST);
-        UsuarioRol usuario =
-                new UsuarioRol(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
+        Usuario usuario =
+                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
         Set<Rol> roles = new HashSet<>();
         if(rolService.obtenerTodos().isEmpty()){

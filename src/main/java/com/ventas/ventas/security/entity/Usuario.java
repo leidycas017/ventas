@@ -1,9 +1,6 @@
 package com.ventas.ventas.security.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ventas.ventas.entity.Empleado;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class UsuarioRol {
+@Table(name="usuario")
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -26,14 +24,17 @@ public class UsuarioRol {
     private String password;
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuarioxrol", joinColumns = @JoinColumn(name = "usuario_id"),
+    @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles = new HashSet<>();
 
-    public UsuarioRol() {
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch=FetchType.EAGER, optional = true)
+    private Empleado empleado;
+
+    public Usuario() {
     }
 
-    public UsuarioRol(@NotNull String nombre, @NotNull String nombreUsuario, @NotNull String email, @NotNull String password) {
+    public Usuario(@NotNull String nombre, @NotNull String nombreUsuario, @NotNull String email, @NotNull String password) {
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
